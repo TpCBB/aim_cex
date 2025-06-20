@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "./todo-header.module.css";
 
 interface TodoHeaderProps {
   activeFilter: string;
@@ -39,24 +40,33 @@ export default function TodoHeader({
   const showClearButton = inputValue || activeFilter;
 
   return (
-    <div style={{ display: "flex", gap: 8 }}>
+    <div className={styles.header}>
       <input
         type="text"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="输入待办事项后回车添加"
-        style={{ padding: 4 }}
+        className={styles.input}
       />
       {showClearButton && (
-        <button onClick={handleClear} style={{ padding: "4px 8px" }}>
+        <button
+          onClick={handleClear}
+          className={`${styles.button} ${styles.clearButton}`}
+        >
           清空
         </button>
       )}
-      <button onClick={handleSearch} style={{ padding: "4px 12px" }}>
+      <button
+        onClick={handleSearch}
+        className={`${styles.button} ${styles.searchButton}`}
+      >
         查找
       </button>
-      <button onClick={handleAdd} style={{ padding: "4px 12px" }}>
+      <button
+        onClick={handleAdd}
+        className={`${styles.button} ${styles.addButton}`}
+      >
         添加
       </button>
     </div>

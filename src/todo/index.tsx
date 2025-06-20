@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import TodoHeader from "./components/todo-header";
 import TodoList from "./components/todo-list";
 import { useTodos } from "./hooks/useTodos";
+import styles from "./Todo.module.css";
 
 export default function Todo() {
   const { todos, addTodo, deleteTodo, toggleTodo } = useTodos();
@@ -9,6 +10,7 @@ export default function Todo() {
 
   const handleAdd = (content: string) => {
     addTodo(content);
+    setFilter("");
   };
 
   const handleSearch = (searchTerm: string) => {
@@ -37,7 +39,7 @@ export default function Todo() {
   }, [todos, filter]);
 
   return (
-    <>
+    <div className={styles.container}>
       <TodoHeader
         activeFilter={filter}
         onAdd={handleAdd}
@@ -49,6 +51,6 @@ export default function Todo() {
         onToggle={handleToggle}
         list={filteredList}
       />
-    </>
+    </div>
   );
 }

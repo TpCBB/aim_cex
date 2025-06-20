@@ -1,0 +1,12 @@
+.list {
+  margin-top: 16px;
+}
+
+.emptyMessage {
+  color: #666;
+  text-align: center;
+  margin-top: 32px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+} 

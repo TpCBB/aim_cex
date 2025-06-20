@@ -1,0 +1,60 @@
+.header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.input {
+  flex-grow: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.addButton {
+  background-color: #28a745;
+}
+.addButton:hover {
+  background-color: #218838;
+}
+
+.searchButton {
+  background-color: #007bff;
+}
+.searchButton:hover {
+  background-color: #0056b3;
+}
+
+.clearButton {
+  background-color: #6c757d;
+}
+
+.clearButton:hover {
+  background-color: #5a6268;
+} 

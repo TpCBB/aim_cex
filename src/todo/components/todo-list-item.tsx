@@ -1,5 +1,6 @@
 import React from "react";
 import { type TodoItem } from "../../../types/todo";
+import styles from "./todo-list-item.module.css";
 
 interface TodoListItemProps {
   item: TodoItem;
@@ -8,25 +9,23 @@ interface TodoListItemProps {
 }
 
 const TodoListItem = ({ item, onToggle, onDelete }: TodoListItemProps) => {
+  const itemClass = `${styles.item} ${item.completed ? styles.completed : ""}`;
+
   return (
-    <div>
-      <label htmlFor={item.id}>
+    <div className={itemClass}>
+      <label htmlFor={item.id} className={styles.label}>
         <input
           id={item.id}
           type="checkbox"
           onChange={() => onToggle(item.id)}
           checked={item.completed}
+          className={styles.checkbox}
         />
-        <span
-          style={{
-            textDecoration: item.completed ? "line-through" : "none",
-            margin: "0 8px",
-          }}
-        >
-          {item.content}
-        </span>
+        <span className={styles.content}>{item.content}</span>
       </label>
-      <button onClick={() => onDelete(item.id)}>删除</button>
+      <button onClick={() => onDelete(item.id)} className={styles.deleteButton}>
+        删除
+      </button>
     </div>
   );
 };

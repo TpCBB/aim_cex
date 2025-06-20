@@ -1,5 +1,6 @@
 import { type TodoItem } from "../../../types/todo";
 import TodoListItem from "./todo-list-item";
+import styles from "./todo-list.module.css";
 
 interface TodoListProps {
   list: TodoItem[];
@@ -13,11 +14,11 @@ export default function TodoList({
   onDelete,
 }: TodoListProps) {
   if (list.length === 0) {
-    return <p>暂无待办事项，快去添加吧！</p>;
+    return <p className={styles.emptyMessage}>暂无待办事项，快去添加吧！</p>;
   }
 
   return (
-    <div style={{ marginTop: 16 }}>
+    <div className={styles.list}>
       {list.map((item) => (
         <TodoListItem
           key={item.id}
