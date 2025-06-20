@@ -1,38 +1,64 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 
 interface TodoHeaderProps {
-  msg: string;
-  setMsg: (value: string) => void;
-  search: () => void;
-  clear: () => void;
-  add: () => void;
+  activeFilter: string;
+  onAdd: (content: string) => void;
+  onSearch: (searchTerm: string) => void;
+  onClear: () => void;
 }
 
-export default function TodoHeader({ msg, setMsg, search, clear, add }: TodoHeaderProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
+export default function TodoHeader({
+  activeFilter,
+  onAdd,
+  onSearch,
+  onClear,
+}: TodoHeaderProps) {
+  const [inputValue, setInputValue] = useState("");
+
+  const handleAdd = () => {
+    if (inputValue.trim() === "") return;
+    onAdd(inputValue);
+    setInputValue("");
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      search();
+      handleAdd();
     }
   };
+
+  const handleSearch = () => {
+    onSearch(inputValue);
+  };
+
+  const handleClear = () => {
+    setInputValue("");
+    onClear();
+  };
+
+  const showClearButton = inputValue || activeFilter;
 
   return (
     <div style={{ display: "flex", gap: 8 }}>
       <input
-        ref={inputRef}
         type="text"
-        value={msg}
-        onChange={e => setMsg(e.target.value)}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="请输入关键词搜索待办事项"
-        style={{  padding: 4 }}
+        placeholder="输入待办事项后回车添加"
+        style={{ padding: 4 }}
       />
-      {msg && (
-        <button onClick={clear} style={{ padding: "4px 8px" }}>清空</button>
+      {showClearButton && (
+        <button onClick={handleClear} style={{ padding: "4px 8px" }}>
+          清空
+        </button>
       )}
-      <button onClick={search} style={{ padding: "4px 12px" }}>查找</button>
-      <button onClick={add} style={{ padding: "4px 12px" }}>添加</button>
+      <button onClick={handleSearch} style={{ padding: "4px 12px" }}>
+        查找
+      </button>
+      <button onClick={handleAdd} style={{ padding: "4px 12px" }}>
+        添加
+      </button>
     </div>
   );
 }

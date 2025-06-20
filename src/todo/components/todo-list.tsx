@@ -1,33 +1,31 @@
-import { type Todo } from "../../../types/todo";
+import { type TodoItem } from "../../../types/todo";
+import TodoListItem from "./todo-list-item";
+
+interface TodoListProps {
+  list: TodoItem[];
+  onToggle: (id: string) => void;
+  onDelete: (id: string) => void;
+}
 
 export default function TodoList({
   list,
-  onCheckBoxchange,
-  onDelete
-}: {
-  list: Todo["list"][];
-  onCheckBoxchange: (item: Todo["list"]) => void;
-  onDelete: (id:string) => void;
-}) {
-  return (
-    <>
-      {list.map((item) => {
-        return (
-          <div key={item.id}>
-            <label htmlFor={item.id} key={item.id}>
-              <input
-                id={item.id}
-                type="checkbox"
-                onChange={() => onCheckBoxchange(item)}
-                checked={item.completed}
-              />
-              {item.content}
-              <button onClick={() => onDelete(item.id)}>删除</button>
-            </label>
-          </div>
-        );
+  onToggle,
+  onDelete,
+}: TodoListProps) {
+  if (list.length === 0) {
+    return <p>暂无待办事项，快去添加吧！</p>;
+  }
 
-      })}
-    </>
+  return (
+    <div style={{ marginTop: 16 }}>
+      {list.map((item) => (
+        <TodoListItem
+          key={item.id}
+          item={item}
+          onToggle={onToggle}
+          onDelete={onDelete}
+        />
+      ))}
+    </div>
   );
 }
