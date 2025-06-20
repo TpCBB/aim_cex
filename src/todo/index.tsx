@@ -1,34 +1,30 @@
 import { useState, useMemo } from "react";
-import { type TodoItem } from "../../types/todo";
 import TodoHeader from "./components/todo-header";
 import TodoList from "./components/todo-list";
 import { useTodos } from "./hooks/useTodos";
 
 export default function Todo() {
   const { todos, addTodo, deleteTodo, toggleTodo } = useTodos();
-  const [inputValue, setInputValue] = useState<string>("");
   const [filter, setFilter] = useState<string>("");
 
-  const search = () => {
-    setFilter(inputValue);
+  const handleAdd = (content: string) => {
+    addTodo(content);
   };
 
-  const clear = () => {
-    setInputValue("");
+  const handleSearch = (searchTerm: string) => {
+    setFilter(searchTerm);
+  };
+
+  const handleClear = () => {
     setFilter("");
   };
 
-  const add = () => {
-    addTodo(inputValue);
-    setInputValue("");
-  };
-
-  const onDelete = (id: string) => {
+  const handleDelete = (id: string) => {
     deleteTodo(id);
   };
 
-  const onCheckBoxchange = (listItem: TodoItem) => {
-    toggleTodo(listItem.id);
+  const handleToggle = (id: string) => {
+    toggleTodo(id);
   };
 
   const filteredList = useMemo(() => {
@@ -43,15 +39,14 @@ export default function Todo() {
   return (
     <>
       <TodoHeader
-        msg={inputValue}
-        setMsg={setInputValue}
-        search={search}
-        clear={clear}
-        add={add}
+        activeFilter={filter}
+        onAdd={handleAdd}
+        onSearch={handleSearch}
+        onClear={handleClear}
       />
       <TodoList
-        onDelete={onDelete}
-        onCheckBoxchange={onCheckBoxchange}
+        onDelete={handleDelete}
+        onToggle={handleToggle}
         list={filteredList}
       />
     </>
