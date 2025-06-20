@@ -1,33 +1,63 @@
 import { useState, useEffect } from "react";
-import type TodoProps from "../../types/todo";
+import { type Todo } from "../../types/todo";
+import TodoHeader from "./components/todo-header";
+import TodoList from "./components/todo-list";
 export default function Todo() {
-  const [todos, setTodos] = useState<TodoProps["list"][]>([
-    { id: "1", completed: true, content: "test" },
+  const [msg, setMsg] = useState<string>("");
+  const [list, setList] = useState<Todo["list"][]>([
+    { id: "1", content: "第一件事情", completed: false },
   ]);
+  const [filterList, setFilterList] = useState<Todo["list"][]>([]);
+  const clear = () => {
+    setMsg("");
+    setFilterList(list);
+  };
 
-  useEffect(() => {
-    console.log(todos);
-  }, [todos]);
+  const search = () => {
+    // 过滤todos
+    if (msg) {
+      setFilterList(list.filter((item) => item.content.includes(msg)));
+    } else {
+      setFilterList(list);
+    }
+  };
 
-  return <>{renderTodoList(todos)}</>;
-}
-
-function renderTodos(todos: TodoProps["list"][]) {
-  return todos.map((todo: TodoProps["list"]) => {
-    return (
-      <label key={todo.id} className="todo-item" htmlFor={todo.id}>
-        <input
-          type="checkbox"
-          name={todo.id}
-          id={todo.id}
-          checked={todo.completed}
-        />
-        {todo.content}
-      </label>
+  const add = () => {
+    if (msg === "" || list.some((item) => item.content === msg)) {
+      // 已存在则不添加（可选：给出提示）
+      return;
+    }
+    setList([
+      ...list,
+      { id: String(list.length + 1), content: msg, completed: false },
+    ]);
+  };
+  const onDelete = (id: string) => {
+    const newList = list.filter(item => item.id !== id);
+    setList(newList);
+  }
+  const onCheckBoxchange = (listItem: Todo["list"]) => {
+    setList(
+      list.map((item) => {
+        if (item.id === listItem.id) item.completed = !item.completed;
+        return item;
+      })
     );
-  });
-}
-
-function renderTodoList(todos: TodoProps["list"][]) {
-  return <div className="todo-list">{renderTodos(todos)}</div>;
+  };
+  useEffect(() => {
+    setFilterList(list);
+  }, [list]);
+  
+  return (
+    <>
+      <TodoHeader
+        msg={msg}
+        setMsg={setMsg}
+        search={search}
+        clear={clear}
+        add={add}
+      />
+      <TodoList onDelete={onDelete} onCheckBoxchange={onCheckBoxchange} list={filterList} />
+    </>
+  );
 }
